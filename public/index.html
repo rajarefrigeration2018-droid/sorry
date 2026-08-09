@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sorry Meri Jaan 🥺❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#ffe3ec;
+    --cream:#fff6f0;
+    --rose:#ff6b9d;
+    --rose-deep:#e0356b;
+    --plum:#4a1942;
+    --gold:#ffc845;
+    --white:#ffffff;
+    --shadow: 0 12px 30px rgba(224,53,107,0.25);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    margin:0; padding:0;
+    width:100%;
+    overflow-x:hidden;
+    background:linear-gradient(160deg,var(--blush) 0%, var(--cream) 55%, #ffd6e4 100%);
+    font-family:'Baloo 2', sans-serif;
+    color:var(--plum);
+  }
+
+  body{
+    min-height:100vh;
+    min-height:100dvh;
+    position:relative;
+  }
+
+  h1,h2,.script{
+    font-family:'Dancing Script', cursive;
+  }
+
+  /* ---------- floating ambient hearts ---------- */
+  .heart-field{
+    position:fixed; inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+  }
+  .heart-field span{
+    position:absolute;
+    bottom:-10%;
+    font-size:1.4rem;
+    opacity:0.55;
+    animation:floatUp linear infinite;
+    filter:drop-shadow(0 2px 4px rgba(224,53,107,0.15));
+  }
+  @keyframes floatUp{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0;}
+    10%{opacity:0.6;}
+    50%{ transform:translateY(-55vh) translateX(15px) rotate(15deg);}
+    90%{opacity:0.4;}
+    100%{ transform:translateY(-110vh) translateX(-10px) rotate(-10deg); opacity:0;}
+  }
+
+  /* ---------- page/screen system ---------- */
+  .stage{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    min-height:100dvh;
+    z-index:2;
+  }
+  .page{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:32px 20px 60px;
+    opacity:0;
+    transform:translateY(24px) scale(0.98);
+    pointer-events:none;
+    transition:opacity 0.5s ease, transform 0.5s ease;
+    text-align:center;
+  }
+  .page.active{
+    position:relative;
+    opacity:1;
+    transform:translateY(0) scale(1);
+    pointer-events:auto;
+  }
+
+  /* ---------- heart photo frame (signature element) ---------- */
+  .photo-wrap{
+    position:relative;
+    width:min(72vw, 260px);
+    aspect-ratio:1/1;
+    margin:10px auto 22px;
+  }
+  .photo-glow{
+    position:absolute; inset:-14px;
+    background:radial-gradient(circle, rgba(255,107,157,0.45), transparent 70%);
+    animation:pulseGlow 2.6s ease-in-out infinite;
+    border-radius:50%;
+  }
+  @keyframes pulseGlow{
+    0%,100%{transform:scale(0.94); opacity:0.7;}
+    50%{transform:scale(1.06); opacity:1;}
+  }
+  .photo-heart{
+    position:relative;
+    width:100%; height:100%;
+    clip-path: url(#heartClip);
+    -webkit-clip-path: url(#heartClip);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    border:3px solid var(--white);
+    background:#f5c9d6;
+  }
+  .photo-heart img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .photo-badge{
+    position:absolute;
+    bottom:-6px; right:6%;
+    background:var(--white);
+    border-radius:50px;
+    padding:5px 12px;
+    font-size:0.75rem;
+    font-weight:700;
+    box-shadow:0 4px 10px rgba(224,53,107,0.25);
+    color:var(--rose-deep);
+  }
+
+  /* ---------- typography blocks ---------- */
+  .eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  h1.headline{
+    font-size:clamp(1.9rem, 8vw, 2.6rem);
+    margin:0 0 6px;
+    color:var(--rose-deep);
+    line-height:1.15;
+  }
+  .subtext{
+    font-size:0.98rem;
+    max-width:340px;
+    margin:0 auto 26px;
+    color:#7a4360;
+    font-weight:500;
+  }
+  .apology-block{
+    max-width:320px;
+    margin:0 auto 18px;
+  }
+  .apology-line{
+    font-size:0.92rem;
+    color:#7a4360;
+    font-weight:600;
+    margin:0 0 8px;
+    opacity:0;
+    transform:translateY(8px);
+    animation:lineIn 0.5s ease forwards;
+  }
+  .apology-line:nth-child(1){ animation-delay:0.15s; }
+  .apology-line:nth-child(2){ animation-delay:0.4s; }
+  .apology-line:nth-child(3){ animation-delay:0.65s; }
+  @keyframes lineIn{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .question-line{
+    font-family:'Dancing Script', cursive;
+    font-size:1.5rem;
+    color:var(--rose-deep);
+    margin:6px 0 22px;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    border:none;
+    border-radius:50px;
+    padding:14px 30px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:active{ transform:scale(0.96); }
+  .btn-yes{
+    background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+    color:#fff;
+  }
+  .btn-yes:hover{ transform:translateY(-2px) scale(1.03); box-shadow:0 16px 34px rgba(224,53,107,0.35); }
+  .btn-no{
+    background:var(--white);
+    color:var(--rose-deep);
+    border:2px solid var(--rose);
+    /* starts inline, right next to YES — only becomes fixed once it needs to escape */
+  }
+  .btn-no.escaping{
+    position:fixed;
+    z-index:50;
+    margin:0;
+    transition: top 0.35s cubic-bezier(.4,1.6,.4,1), left 0.35s cubic-bezier(.4,1.6,.4,1);
+  }
+  .btn-row{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:6px;
+    position:relative;
+    min-height:60px;
+    width:100%;
+  }
+  .btn:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+
+  /* ---------- location cards ---------- */
+  .card-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    width:100%;
+    max-width:380px;
+    margin-top:8px;
+  }
+  .loc-card{
+    background:var(--white);
+    border:2px solid #ffd3e2;
+    border-radius:20px;
+    padding:18px 10px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    color:var(--plum);
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(224,53,107,0.12);
+    transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .loc-card .emoji{ font-size:1.6rem; display:block; margin-bottom:6px; }
+  .loc-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--rose);
+    box-shadow:0 14px 26px rgba(224,53,107,0.22);
+  }
+  .loc-card.good{ background:linear-gradient(135deg,#fff,#fff0f5); }
+
+  /* ---------- overlay / modal ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(74,25,66,0.55);
+    backdrop-filter:blur(3px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+    padding:20px;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+  .modal{
+    background:var(--white);
+    border-radius:26px;
+    padding:28px 24px;
+    max-width:340px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    transform:scale(0.85) translateY(20px);
+    transition:transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .overlay.show .modal{ transform:scale(1) translateY(0); }
+  .modal .big-emoji{ font-size:2.6rem; margin-bottom:6px; }
+  .modal p{ font-weight:700; font-size:1.05rem; margin:0 0 20px; color:var(--plum); }
+  .modal .btn-row{ min-height:auto; }
+
+  /* ---------- final page payment ---------- */
+  .price-box{
+    background:var(--white);
+    border-radius:24px;
+    padding:22px 20px;
+    box-shadow:var(--shadow);
+    width:100%;
+    max-width:340px;
+    margin:14px auto 22px;
+  }
+  .price-box .location-line{
+    font-size:0.95rem;
+    color:var(--rose-deep);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .price-box .amount{
+    font-family:'Dancing Script', cursive;
+    font-size:2.6rem;
+    color:var(--plum);
+    margin:4px 0;
+  }
+  .price-box .fine-print{
+    font-size:0.8rem;
+    color:#a8768e;
+    margin-top:8px;
+  }
+  .qr-box{
+    width:min(60vw, 220px);
+    aspect-ratio:1/1;
+    margin:14px auto;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    border:4px solid var(--white);
+    outline:2px dashed var(--rose);
+  }
+  .qr-box img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  footer.sig{
+    margin-top:30px;
+    font-size:0.75rem;
+    color:#c98aa4;
+    font-weight:600;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- reusable heart-shape clip path, scales correctly to any frame size -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+      <path d="M0.5,0.92 C0.08,0.64 -0.06,0.32 0.14,0.14 C0.26,0.02 0.42,0.06 0.5,0.24 C0.58,0.06 0.74,0.02 0.86,0.14 C1.06,0.32 0.92,0.64 0.5,0.92 Z"/>
+    </clipPath>
+  </defs>
+</svg>
+
+<!-- ambient floating hearts, purely decorative -->
+<div class="heart-field" id="heartField"></div>
+
+<div class="stage">
+
+  <!-- ============ PAGE 1 ============ -->
+  <section class="page active" id="page1">
+    <div class="eyebrow">Ek Chhoti Si Guzarish</div>
+    <div class="photo-wrap">
+      <div class="photo-glow"></div>
+      <div class="photo-heart">
+        <!-- 📸 drop your file at public/assets/photo1.jpg -->
+        <img class="photo-placeholder" data-label="Photo 1" data-seed="1" data-real="assets/photo1.jpg" alt="Uski pyari si photo">
+      </div>
+      <div class="photo-badge">meri jaan 💕</div>
+    </div>
+    <h1 class="headline">Tum abhi bhi gussa ho mujhse? 🥺❤️</h1>
+    <div class="apology-block">
+      <p class="apology-line">Sorry meri jaan, maine galti ki 🥺</p>
+      <p class="apology-line">Tumhari smile ke bina din adhura lagta hai ❤️</p>
+      <p class="apology-line">Bas ek mauka de do, sab thik kar dunga 🙏💕</p>
+    </div>
+    <p class="question-line">Toh... mujhe maaf karogi na? 💕</p>
+    <div class="btn-row" id="row1">
+      <button class="btn btn-yes" onclick="goTo('page2')">YES ❤️</button>
+      <button class="btn btn-no" id="no1">NO 😏</button>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 2 ============ -->
+  <section class="page" id="page2">
+    <div class="eyebrow">Chalo Fir</div>
+    <div class="photo-wrap">
+      <div class="photo-glow"></div>
+      <div class="photo-heart">
+        <!-- 📸 drop your file at public/assets/photo2.jpg -->
+        <img class="photo-placeholder" data-label="Photo 2" data-seed="2" data-real="assets/photo2.jpg" alt="Uski cute si photo">
+      </div>
+      <div class="photo-badge">cutie pie 🥰</div>
+    </div>
+    <h1 class="headline">Mere saath date pe chalogi? 🥺👉👈</h1>
+    <p class="subtext">Promise, is baar bill bhi main hi paunga (shayad) 😂</p>
+    <div class="btn-row" id="row2">
+      <button class="btn btn-yes" onclick="goTo('page3')">YES ❤️</button>
+      <button class="btn btn-no" id="no2">NO 😏</button>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3 ============ -->
+  <section class="page" id="page3">
+    <div class="eyebrow">Bas Ek Choice Aur</div>
+    <div class="photo-wrap" style="width:min(58vw,190px);">
+      <div class="photo-glow"></div>
+      <div class="photo-heart">
+        <!-- 📸 drop your file at public/assets/photo3.jpg -->
+        <img class="photo-placeholder" data-label="Photo 3" data-seed="3" data-real="assets/photo3.jpg" alt="Uski smiling photo">
+      </div>
+    </div>
+    <h1 class="headline">Date kahan chalein? ❤️</h1>
+    <p class="subtext">Location choose karo, rest sab main sambhal lunga 😌</p>
+    <div class="card-grid">
+      <button class="loc-card good" onclick="chooseLocation('Tumhare Ghar 🏠', true)">
+        <span class="emoji">🏠</span> At Your Home
+      </button>
+      <button class="loc-card good" onclick="chooseLocation('Masjid 🕌', true)">
+        <span class="emoji">🕌</span> At Masjid
+      </button>
+      <button class="loc-card" onclick="chooseLocation('Galaxy9 🌌', false)">
+        <span class="emoji">🌌</span> Galaxy9
+      </button>
+      <button class="loc-card" onclick="chooseLocation('Gym 🏋️', false)">
+        <span class="emoji">🏋️</span> Gym
+      </button>
+      <button class="loc-card" onclick="chooseLocation('Bhajanpura 📍', false)">
+        <span class="emoji">📍</span> Bhajanpura
+      </button>
+      <button class="loc-card" onclick="chooseLocation('CP ❤️', false)">
+        <span class="emoji">❤️</span> CP
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FINAL PAGE ============ -->
+  <section class="page" id="pageFinal">
+    <div class="eyebrow">Confirm Ho Gaya 🎉</div>
+    <div class="photo-wrap">
+      <div class="photo-glow"></div>
+      <div class="photo-heart">
+        <!-- 📸 drop your file at public/assets/photo4.jpg -->
+        <img class="photo-placeholder" data-label="Photo 4" data-seed="4" data-real="assets/photo4.jpg" alt="Uski beautiful photo">
+      </div>
+      <div class="photo-badge">my forever 💍</div>
+    </div>
+    <h1 class="headline">Date Fix Ho Gayi! 💸❤️</h1>
+    <div class="price-box">
+      <div class="location-line">As you selected: <span id="selectedLocationText">—</span></div>
+      <div class="amount">₹5000</div>
+      <p class="subtext" style="margin-bottom:0;">Kindly pay ₹5000 as the charges for this date 😌❤️</p>
+      <div class="fine-print">(pura pyaar se liya jaayega, chinta mat karo 🥹)</div>
+    </div>
+    <button class="btn btn-yes" onclick="openQR()">Pay ₹5000 💸</button>
+    <footer class="sig">made with too much ❤️ (and thoda sa drama) — sorry meri jaan</footer>
+  </section>
+
+</div>
+
+<!-- ============ WRONG LOCATION POPUP ============ -->
+<div class="overlay" id="wrongOverlay">
+  <div class="modal">
+    <div class="big-emoji">💔</div>
+    <p>Ye option select karne ki permission nahi hai madam ji 😭</p>
+    <div class="btn-row">
+      <button class="btn btn-no" style="position:static; transform:none;" onclick="closeWrongOverlay()">Go Back 🔙</button>
+      <button class="btn btn-yes" onclick="proceedAnyway()">Proceed Anyway ❤️</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ QR PAYMENT MODAL ============ -->
+<div class="overlay" id="qrOverlay">
+  <div class="modal">
+    <div class="big-emoji">😌❤️</div>
+    <p style="margin-bottom:8px;">Scan karo madam ji 😌❤️</p>
+    <div class="qr-box">
+      <!-- 📸 drop your file at public/assets/qr.jpg -->
+      <img class="photo-placeholder" data-label="QR Code" data-seed="qr" data-real="assets/qr.jpg" alt="Payment QR code placeholder">
+    </div>
+    <p style="font-size:0.85rem; margin-bottom:18px;">Date confirm karne ke liye ₹5000 pay karein 😂</p>
+    <button class="btn btn-yes" onclick="closeQR()">Go Back 🔙</button>
+  </div>
+</div>
+
+<script>
+/* ---------------- placeholder image generator ----------------
+   Generates a cute gradient placeholder with a label, so every
+   image looks nice even before real photos are added.
+   TO ADD REAL PHOTOS: just drop your files into public/assets/
+   named photo1.jpg, photo2.jpg, photo3.jpg, photo4.jpg, qr.jpg
+   — this script auto-detects them and swaps the placeholder out.
+   No HTML editing needed.
+---------------------------------------------------------------- */
+function makePlaceholder(label, seed){
+  const palettes = [
+    ['#ff9ec1','#ff6b9d'],
+    ['#ffc1d9','#e0356b'],
+    ['#ffd3a8','#ff6b9d'],
+    ['#ffb6d5','#c9184a'],
+    ['#f6c9ff','#e0356b']
+  ];
+  const idx = (typeof seed === 'string' ? seed.charCodeAt(0) : seed) % palettes.length;
+  const [c1,c2] = palettes[idx] || palettes[0];
+  const isQR = label.toLowerCase().includes('qr');
+  const svg = `
+  <svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
+    <defs>
+      <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0%' stop-color='${c1}'/>
+        <stop offset='100%' stop-color='${c2}'/>
+      </linearGradient>
+    </defs>
+    <rect width='400' height='400' fill='url(#g)'/>
+    ${isQR ? `
+      <rect x='60' y='60' width='280' height='280' rx='16' fill='#fff' opacity='0.9'/>
+      <text x='200' y='185' font-family='sans-serif' font-size='20' font-weight='700' fill='${c2}' text-anchor='middle'>QR CODE</text>
+      <text x='200' y='215' font-family='sans-serif' font-size='20' font-weight='700' fill='${c2}' text-anchor='middle'>YAHAN</text>
+      <text x='200' y='260' font-family='sans-serif' font-size='13' fill='${c2}' text-anchor='middle'>(apna asli QR daalo)</text>
+    ` : `
+      <text x='200' y='190' font-family='sans-serif' font-size='54' text-anchor='middle'>💗</text>
+      <text x='200' y='240' font-family='sans-serif' font-size='18' font-weight='700' fill='#ffffff' text-anchor='middle'>${label}</text>
+      <text x='200' y='266' font-family='sans-serif' font-size='13' fill='#ffffffcc' text-anchor='middle'>photo yahan aayegi</text>
+    `}
+  </svg>`;
+  return 'data:image/svg+xml;base64,' + utf8ToBase64(svg);
+}
+function utf8ToBase64(str){
+  // btoa() alone chokes on emoji/unicode — encode as UTF-8 bytes first
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, hex) => String.fromCharCode('0x' + hex)));
+}
+document.querySelectorAll('.photo-placeholder').forEach(img=>{
+  const placeholder = makePlaceholder(img.dataset.label, img.dataset.seed);
+  const realPath = img.dataset.real;
+
+  if(realPath){
+    // try the real file in /assets first; if it's not there yet, use the cute placeholder
+    const tester = new Image();
+    tester.onload = ()=>{ img.src = realPath; };
+    tester.onerror = ()=>{ img.src = placeholder; };
+    tester.src = realPath;
+  } else {
+    img.src = placeholder;
+  }
+});
+
+/* ---------------- ambient floating hearts ---------------- */
+const heartField = document.getElementById('heartField');
+const heartEmojis = ['💗','💕','❤️','💖','💓'];
+for(let i=0;i<16;i++){
+  const s = document.createElement('span');
+  s.textContent = heartEmojis[i % heartEmojis.length];
+  s.style.left = Math.random()*100 + '%';
+  s.style.fontSize = (0.9 + Math.random()*1.3) + 'rem';
+  s.style.animationDuration = (7 + Math.random()*8) + 's';
+  s.style.animationDelay = (Math.random()*8) + 's';
+  heartField.appendChild(s);
+}
+
+/* ---------------- page navigation ---------------- */
+function goTo(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------------- escaping NO button logic ---------------- */
+function setupEscapingButton(btn, scopeEl){
+  const margin = 16;
+  let moving = false;
+
+  function becomeFixed(){
+    if(btn.classList.contains('escaping')) return;
+    // lock its current on-screen spot first so the switch to fixed is invisible
+    const r = btn.getBoundingClientRect();
+    btn.style.left = r.left + 'px';
+    btn.style.top = r.top + 'px';
+    btn.classList.add('escaping');
+  }
+
+  function randomPosition(){
+    const w = btn.offsetWidth || 110;
+    const h = btn.offsetHeight || 50;
+    const maxLeft = window.innerWidth - w - margin;
+    const maxTop = window.innerHeight - h - margin;
+    const left = margin + Math.random() * Math.max(0, maxLeft - margin);
+    const top  = margin + Math.random() * Math.max(0, maxTop - margin);
+    btn.style.left = left + 'px';
+    btn.style.top = top + 'px';
+  }
+
+  function jump(){
+    if(moving) return;
+    moving = true;
+    becomeFixed();
+    // let the browser register the fixed position first, then animate to a new spot
+    requestAnimationFrame(()=> requestAnimationFrame(randomPosition));
+    setTimeout(()=>{ moving = false; }, 300);
+  }
+
+  function distToPointer(clientX, clientY){
+    const r = btn.getBoundingClientRect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+    return Math.hypot(clientX - cx, clientY - cy);
+  }
+
+  // desktop: move away when cursor gets near
+  scopeEl.addEventListener('mousemove', (e)=>{
+    if(!scopeEl.classList.contains('active')) return;
+    if(distToPointer(e.clientX, e.clientY) < 90){
+      jump();
+    }
+  });
+
+  // mobile: move away on touchmove near the button, and on touchstart directly on it
+  scopeEl.addEventListener('touchmove', (e)=>{
+    if(!scopeEl.classList.contains('active')) return;
+    const t = e.touches[0];
+    if(t && distToPointer(t.clientX, t.clientY) < 100){
+      jump();
+    }
+  }, {passive:true});
+
+  btn.addEventListener('touchstart', (e)=>{
+    e.preventDefault();
+    jump();
+  }, {passive:false});
+
+  btn.addEventListener('mouseenter', jump);
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    jump();
+  });
+
+  window.addEventListener('resize', ()=>{
+    if(btn.classList.contains('escaping') && scopeEl.classList.contains('active')){
+      randomPosition();
+    }
+  });
+}
+
+setupEscapingButton(document.getElementById('no1'), document.getElementById('page1'));
+setupEscapingButton(document.getElementById('no2'), document.getElementById('page2'));
+
+/* ---------------- location selection ---------------- */
+let selectedLocation = null;
+let pendingWrongLocation = null;
+
+function chooseLocation(name, isGood){
+  if(isGood){
+    selectedLocation = name;
+    document.getElementById('selectedLocationText').textContent = name;
+    goTo('pageFinal');
+  } else {
+    pendingWrongLocation = name;
+    document.getElementById('wrongOverlay').classList.add('show');
+  }
+}
+
+function closeWrongOverlay(){
+  document.getElementById('wrongOverlay').classList.remove('show');
+  pendingWrongLocation = null;
+}
+
+function proceedAnyway(){
+  if(pendingWrongLocation){
+    selectedLocation = pendingWrongLocation;
+    document.getElementById('selectedLocationText').textContent = selectedLocation;
+  }
+  document.getElementById('wrongOverlay').classList.remove('show');
+  goTo('pageFinal');
+}
+
+/* ---------------- QR modal ---------------- */
+function openQR(){
+  document.getElementById('qrOverlay').classList.add('show');
+}
+function closeQR(){
+  document.getElementById('qrOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
